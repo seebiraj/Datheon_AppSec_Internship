@@ -22,7 +22,6 @@ This repository contains all 4 standard internship tasks built with **100% free 
 ```
 Datheon_AppSec_Internship/
 ├── README.md
-├── LINKEDIN_WALKTHROUGH.md           # LinkedIn Project Walkthrough (Tagging @Datheon)
 ├── package.json
 ├── tsconfig.json
 ├── jest.config.js
@@ -187,8 +186,5 @@ Ran all test suites.
 - **Program:** Datheon Application Security & API Pentesting Internship
 - **Batch:** Batch 01 (Jeppiaar institute of technology)
 - **Application ID:** `DT-2026-TV82L`
-- **Candidate Name:** Seebiraj V (`jeeviseebi007@gmail.com`)
 - **Completed Tasks:** Task 1, Task 2, Task 3, Task 4 (All 4 Completed)
 - **GitHub Repository:** [https://github.com/seebiraj/Datheon_AppSec_Internship](https://github.com/seebiraj/Datheon_AppSec_Internship)
-- **LinkedIn Post Walkthrough:** Refer to [`LINKEDIN_WALKTHROUGH.md`](./LINKEDIN_WALKTHROUGH.md) (Tagging `@Datheon`)
-- **License:** MIT License (100% Free & Open-Source)
