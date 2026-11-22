@@ -1,0 +1,60 @@
+name: Datheon AppSec & DAST Security Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  security-tests-and-linting:
+    name: 🛡️ Security Audit & Automated Test Suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Node Dependencies
+        run: npm ci || npm install
+
+      - name: Verify TypeScript Compilation
+        run: npm run build
+
+      - name: Execute Security & BOLA Test Suite (Jest)
+        run: npm test
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Background API Server Launch
+        run: |
+          npm start &
+          sleep 3
+
+      - name: Execute Automated IDOR Fuzzing PoC (Task 1)
+        run: python scripts/idor_fuzzer_poc.py
+
+      - name: Automated Security Headers & PII DAST Check
+        run: |
+          echo "Verifying HTTP Security Headers on Public Verification..."
+          curl -s -D - "http://localhost:4000/api/v1/public/verify/DT-2026-TV82L" -o /tmp/resp.json
+          grep -i "X-Content-Type-Options: nosniff" /tmp/resp.json || exit 1
+          grep -i "X-Frame-Options: DENY" /tmp/resp.json || exit 1
+          echo "Verifying PII Masking..."
+          grep "j\*\*\*7@gmail.com" /tmp/resp.json || exit 1
+          echo "Zero-Trust Security Verification Passed!"
+
+      - name: Secret Scan & Token Guard
+        run: |
+          echo "Scanning for accidental token commitments..."
+          # Reject any committed live GitHub personal access tokens
+          ! grep -rE "ghp_[a-zA-Z0-9]{36}" . --exclude-dir={.git,node_modules,dist} || (echo "SECRET LEAK DETECTED" && exit 1)

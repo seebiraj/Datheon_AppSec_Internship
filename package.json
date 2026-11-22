@@ -1,0 +1,49 @@
+{
+  "name": "datheon-appsec-internship",
+  "version": "1.0.0",
+  "description": "Datheon Application Security & API Pentesting Internship: IDOR/BOLA Hunt, Zero-Trust Route Architecture, Cryptographic Session Defense, and Public Shielding DAST Pipeline",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "ts-node src/server.ts",
+    "test": "jest --runInBand --detectOpenHandles --forceExit",
+    "test:coverage": "jest --coverage --runInBand --detectOpenHandles --forceExit",
+    "lint": "tsc --noEmit",
+    "fuzz:idor": "python scripts/idor_fuzzer_poc.py",
+    "demo:session": "ts-node scripts/demo_session_ratelimit.ts"
+  },
+  "keywords": [
+    "appsec",
+    "api-security",
+    "idor",
+    "bola",
+    "owasp-top-10-api",
+    "jwt",
+    "http-only-cookie",
+    "rate-limiting",
+    "pii-masking",
+    "zero-trust"
+  ],
+  "author": "seebiraj (jeeviseebi007@gmail.com)",
+  "license": "MIT",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.7",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^20.14.9",
+    "@types/supertest": "^6.0.2",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.1.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
+  }
+}

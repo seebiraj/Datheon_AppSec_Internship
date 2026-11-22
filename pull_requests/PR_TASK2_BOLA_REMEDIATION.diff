@@ -1,0 +1,66 @@
+diff --git a/src/routes/candidates.ts b/src/routes/hardened/candidates.ts
+similarity index 65%
+rename from src/routes/candidates.ts
+rename to src/routes/hardened/candidates.ts
+--- a/src/routes/candidates.ts
++++ b/src/routes/hardened/candidates.ts
+@@ -1,30 +1,55 @@
+ import { Router, Request, Response } from 'express';
+ import { db } from '../../db/store';
++import { requireSessionAuth } from '../../middleware/sessionAuth';
++import { enforceObjectLevelAuthorization } from '../../middleware/authGuard';
+ 
+ const router = Router();
+ 
+-/**
+- * VULNERABLE IMPLEMENTATION (Pre-Remediation):
+- * Insecure Direct Object Reference (IDOR) / Broken Object Level Authorization (BOLA)
+- * Direct parameter queries DB without session verification.
+- */
+-router.get('/candidates/:id', (req: Request, res: Response) => {
+-  const { id } = req.params;
+-  const candidate = db.findByIdBlind(id); // VULNERABILITY: Blind single-parameter lookup
+-
+-  if (!candidate) {
+-    return res.status(404).json({ error: 'Candidate not found' });
+-  }
+-
+-  return res.status(200).json(candidate);
+-});
++/**
++ * HARDENED IMPLEMENTATION (Post-Remediation):
++ * Zero-Trust Route Defense & Multi-Tenant Scoped Lookups
++ * Defenses:
++ * 1. requireSessionAuth: Rejects unauthenticated callers with HTTP 401
++ * 2. enforceObjectLevelAuthorization: Checks subject vs requested resource
++ * 3. findByIdWithOwnership: Scoped DB query filters by (resourceId AND sessionUserId)
++ */
++router.get(
++  '/candidates/:id',
++  requireSessionAuth,
++  enforceObjectLevelAuthorization,
++  (req: Request, res: Response) => {
++    const { id } = req.params;
++    const sessionUser = req.user!;
++
++    // Remediated: DB query filters by BOTH resource ID and session subject context
++    const candidate = db.findByIdWithOwnership(id, sessionUser.userId, sessionUser.role);
++
++    if (!candidate) {
++      // Return 404/403 gracefully without leaking schema or stack traces
++      return res.status(404).json({
++        success: false,
++        error: 'RESOURCE_NOT_FOUND',
++        message: 'The requested resource was not found or you are not authorized to view it.'
++      });
++    }
++
++    return res.status(200).json({
++      success: true,
++      message: 'Authorized access granted.',
++      data: candidate
++    });
++  }
++);
++
++export default router;

@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 480" width="100%" height="100%">
+  <defs>
+    <linearGradient id="darkBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3f1219"/>
+      <stop offset="100%" stop-color="#1c070a"/>
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b"/>
+      <stop offset="100%" stop-color="#022c22"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="950" height="480" rx="16" fill="url(#darkBg)" stroke="#1e293b" stroke-width="2"/>
+
+  <!-- Main Header -->
+  <text x="475" y="45" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="bold" fill="#f8fafc">
+    IDOR / BOLA ATTACK RECONNAISSANCE vs. ZERO-TRUST REMEDIATION
+  </text>
+  <text x="475" y="70" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#94a3b8">
+    Comparative Threat Model: OWASP API1:2023 Broken Object Level Authorization
+  </text>
+
+  <!-- Section 1: Vulnerable Path (Red) -->
+  <g transform="translate(40, 100)">
+    <rect width="870" height="160" rx="12" fill="url(#redGrad)" stroke="#ef4444" stroke-width="1.5"/>
+    <rect x="20" y="15" width="220" height="28" rx="6" fill="#7f1d1d"/>
+    <text x="30" y="34" font-family="sans-serif" font-size="12" font-weight="bold" fill="#fca5a5">❌ VULNERABLE PATH (Task 1)</text>
+
+    <!-- Node 1 -->
+    <rect x="25" y="60" width="180" height="75" rx="8" fill="#180507" stroke="#b91c1c" stroke-width="1"/>
+    <text x="115" y="85" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#f87171">Attacker / Client</text>
+    <text x="115" y="105" text-anchor="middle" font-family="monospace" font-size="10" fill="#fca5a5">?appId=DT-2026-001</text>
+    <text x="115" y="122" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#fda4af">[Zero Auth Headers / Cookies]</text>
+
+    <!-- Arrow -->
+    <path d="M 215 97 L 275 97" stroke="#ef4444" stroke-width="2"/>
+    <polygon points="275,93 285,97 275,101" fill="#ef4444"/>
+
+    <!-- Node 2 -->
+    <rect x="295" y="60" width="220" height="75" rx="8" fill="#180507" stroke="#b91c1c" stroke-width="1"/>
+    <text x="405" y="85" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#f87171">Blind Backend Handler</text>
+    <text x="405" y="105" text-anchor="middle" font-family="monospace" font-size="10" fill="#fca5a5">db.findByIdBlind(appId)</text>
+    <text x="405" y="122" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#f87171">⚠️ No session verification!</text>
+
+    <!-- Arrow -->
+    <path d="M 525 97 L 585 97" stroke="#ef4444" stroke-width="2"/>
+    <polygon points="585,93 595,97 585,101" fill="#ef4444"/>
+
+    <!-- Node 3 -->
+    <rect x="605" y="60" width="240" height="75" rx="8" fill="#180507" stroke="#ef4444" stroke-width="1.5"/>
+    <text x="725" y="83" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#fca5a5">🚨 200 OK: DATA EXFILTRATION</text>
+    <text x="725" y="102" text-anchor="middle" font-family="monospace" font-size="10" fill="#fecaca">Alice Johnson (Stanford)</text>
+    <text x="725" y="120" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#f87171">Leaked: Email, Phone, Evaluation Notes</text>
+  </g>
+
+  <!-- Section 2: Hardened Path (Green) -->
+  <g transform="translate(40, 280)">
+    <rect width="870" height="170" rx="12" fill="url(#greenGrad)" stroke="#10b981" stroke-width="1.5"/>
+    <rect x="20" y="15" width="240" height="28" rx="6" fill="#065f46"/>
+    <text x="30" y="34" font-family="sans-serif" font-size="12" font-weight="bold" fill="#a7f3d0">✔ HARDENED ZERO-TRUST (Task 2)</text>
+
+    <!-- Node 1 -->
+    <rect x="25" y="60" width="180" height="85" rx="8" fill="#021f18" stroke="#059669" stroke-width="1"/>
+    <text x="115" y="85" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#34d399">Authenticated User A</text>
+    <text x="115" y="105" text-anchor="middle" font-family="monospace" font-size="10" fill="#a7f3d0">GET /candidates/DT-2026-001</text>
+    <text x="115" y="122" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#6ee7b7">Session Cookie: User A (101)</text>
+    <text x="115" y="136" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#fcd34d">Target: User B Record (102)</text>
+
+    <!-- Arrow -->
+    <path d="M 215 102 L 275 102" stroke="#10b981" stroke-width="2"/>
+    <polygon points="275,98 285,102 275,106" fill="#10b981"/>
+
+    <!-- Node 2 -->
+    <rect x="295" y="60" width="230" height="85" rx="8" fill="#021f18" stroke="#059669" stroke-width="1"/>
+    <text x="410" y="83" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#34d399">Authorization Guard</text>
+    <text x="410" y="102" text-anchor="middle" font-family="monospace" font-size="9" fill="#a7f3d0">1. verifyAccessToken(cookie)</text>
+    <text x="410" y="118" text-anchor="middle" font-family="monospace" font-size="9" fill="#a7f3d0">2. enforceObjectAuth(req.user)</text>
+    <text x="410" y="135" text-anchor="middle" font-family="monospace" font-size="9" fill="#6ee7b7">3. filter(resourceId, sessionUser)</text>
+
+    <!-- Arrow -->
+    <path d="M 535 102 L 595 102" stroke="#10b981" stroke-width="2"/>
+    <polygon points="595,98 605,102 595,106" fill="#10b981"/>
+
+    <!-- Node 3 -->
+    <rect x="615" y="60" width="230" height="85" rx="8" fill="#021f18" stroke="#10b981" stroke-width="1.5"/>
+    <text x="730" y="85" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#34d399">🛡️ 403 FORBIDDEN / 404</text>
+    <text x="730" y="105" text-anchor="middle" font-family="monospace" font-size="10" fill="#a7f3d0">BOLA_AUTHORIZATION_VIOLATION</text>
+    <text x="730" y="123" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#6ee7b7">Zero Data Exfiltration</text>
+    <text x="730" y="137" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#34d399">✔ Zero DB Schema Leaks</text>
+  </g>
+</svg>

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 460" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgSess" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="badCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#450a0a"/>
+      <stop offset="100%" stop-color="#1c070a"/>
+    </linearGradient>
+    <linearGradient id="goodCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b"/>
+      <stop offset="100%" stop-color="#022c22"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="950" height="460" rx="16" fill="url(#bgSess)" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="475" y="45" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="bold" fill="#f8fafc">
+    TASK 3: CRYPTOGRAPHIC SESSION SECURITY &amp; STORAGE THREAT MODEL
+  </text>
+  <text x="475" y="70" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#94a3b8">
+    Client-Side localStorage Vulnerabilities vs Server-Signed HTTP-Only Cookie Architecture
+  </text>
+
+  <!-- Left: Insecure localStorage -->
+  <g transform="translate(40, 100)">
+    <rect width="415" height="320" rx="12" fill="url(#badCard)" stroke="#ef4444" stroke-width="1.5"/>
+    <rect x="20" y="18" width="220" height="30" rx="6" fill="#7f1d1d"/>
+    <text x="30" y="38" font-family="sans-serif" font-size="12" font-weight="bold" fill="#fca5a5">⚠️ INSECURE: localStorage</text>
+
+    <!-- Content -->
+    <rect x="20" y="65" width="375" height="70" rx="8" fill="#180507" stroke="#b91c1c" stroke-width="1"/>
+    <text x="35" y="90" font-family="sans-serif" font-size="12" font-weight="bold" fill="#f87171">Exposed to JavaScript (XSS Threat):</text>
+    <text x="35" y="112" font-family="monospace" font-size="11" fill="#fca5a5">const token = localStorage.getItem("jwt");</text>
+    <text x="35" y="126" font-family="sans-serif" font-size="10" fill="#f87171">Any injected script can steal credentials via fetch()</text>
+
+    <rect x="20" y="150" width="375" height="145" rx="8" fill="#180507" stroke="#b91c1c" stroke-width="1"/>
+    <text x="35" y="175" font-family="sans-serif" font-size="12" font-weight="bold" fill="#fca5a5">Vulnerabilities:</text>
+    <text x="35" y="200" font-family="sans-serif" font-size="11" fill="#fecaca">❌ Accessible to all 3rd party scripts &amp; XSS</text>
+    <text x="35" y="222" font-family="sans-serif" font-size="11" fill="#fecaca">❌ Zero built-in expiration enforcement</text>
+    <text x="35" y="244" font-family="sans-serif" font-size="11" fill="#fecaca">❌ Vulnerable to automated token harvesting</text>
+    <text x="35" y="266" font-family="sans-serif" font-size="11" fill="#fecaca">❌ No native SameSite or Secure protection</text>
+  </g>
+
+  <!-- Right: Secure HTTP-Only Cookie -->
+  <g transform="translate(495, 100)">
+    <rect width="415" height="320" rx="12" fill="url(#goodCard)" stroke="#10b981" stroke-width="1.5"/>
+    <rect x="20" y="18" width="260" height="30" rx="6" fill="#065f46"/>
+    <text x="30" y="38" font-family="sans-serif" font-size="12" font-weight="bold" fill="#a7f3d0">🛡️ SECURE: HTTP-Only Cookies + JWT</text>
+
+    <!-- Content -->
+    <rect x="20" y="65" width="375" height="70" rx="8" fill="#021f18" stroke="#059669" stroke-width="1"/>
+    <text x="35" y="90" font-family="sans-serif" font-size="12" font-weight="bold" fill="#34d399">Inaccessible to JavaScript Runtime:</text>
+    <text x="35" y="112" font-family="monospace" font-size="11" fill="#a7f3d0">document.cookie // Returns empty string!</text>
+    <text x="35" y="126" font-family="sans-serif" font-size="10" fill="#6ee7b7">Shielded at OS and browser network stack</text>
+
+    <rect x="20" y="150" width="375" height="145" rx="8" fill="#021f18" stroke="#059669" stroke-width="1"/>
+    <text x="35" y="175" font-family="sans-serif" font-size="12" font-weight="bold" fill="#a7f3d0">Active Security Controls:</text>
+    <text x="35" y="198" font-family="sans-serif" font-size="11" fill="#d1fae5">✔ HttpOnly: Blocks XSS credential exfiltration</text>
+    <text x="35" y="218" font-family="sans-serif" font-size="11" fill="#d1fae5">✔ SameSite=Lax: Thwarts Cross-Site Request Forgery</text>
+    <text x="35" y="238" font-family="sans-serif" font-size="11" fill="#d1fae5">✔ HMAC-SHA256: Cryptographic signature verification</text>
+    <text x="35" y="258" font-family="sans-serif" font-size="11" fill="#d1fae5">✔ Automated Refresh Token Rotation (7-day lifecycle)</text>
+    <text x="35" y="278" font-family="sans-serif" font-size="11" fill="#d1fae5">✔ Sliding Window Rate Limiting (RFC 6585, 429 Retry)</text>
+  </g>
+</svg>
