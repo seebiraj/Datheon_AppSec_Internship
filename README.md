@@ -187,7 +187,7 @@ Every HTTP response is fortified with zero-trust headers (`src/config/securityHe
 * Fingerprint Removal: `X-Powered-By` header stripped.
 
 ### 3. Automated CI/CD Security Workflow
-The repository includes a GitHub Actions pipeline ([`.github/workflows/security-ci.yml`](./.github/workflows/security-ci.yml)) and CodeQL SAST ([`.github/workflows/codeql.yml`](./.github/workflows/codeql.yml)) that automatically:
+The repository includes CI/CD security pipeline templates ([`pipelines/github-workflows/security-ci.yml`](./pipelines/github-workflows/security-ci.yml)) and CodeQL SAST ([`pipelines/github-workflows/codeql.yml`](./pipelines/github-workflows/codeql.yml)) that automatically:
 1. Validates strict TypeScript compilation.
 2. Executes the full Jest security test suite.
 3. Runs the automated IDOR fuzzer against a background server.
@@ -200,8 +200,8 @@ The repository includes a GitHub Actions pipeline ([`.github/workflows/security-
 
 ```
 Datheon_AppSec_Internship/
-├── .github/
-│   └── workflows/
+├── pipelines/
+│   └── github-workflows/
 │       ├── security-ci.yml           # Automated DAST, SAST, headers audit & tests
 │       └── codeql.yml                # GitHub CodeQL static analysis
 ├── assets/
